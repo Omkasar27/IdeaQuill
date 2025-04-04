@@ -1,0 +1,374 @@
+/* Base styling */
+.container {
+  background-color: white;
+  min-height: 100vh;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Hero section styling */
+.hero-section {
+  padding: 80px 20px;
+  background-color: white;
+  position: relative;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(180deg, rgba(245,247,250,0) 0%, rgba(245,247,250,0.8) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.hero-text {
+  max-width: 600px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #222;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stat-icon {
+  color: #3498db;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Button styles */
+.primary-button, .secondary-button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primary-button {
+  background-color: #3498db;
+  color: white;
+  box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+}
+
+.primary-button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(52, 152, 219, 0.3);
+}
+
+.secondary-button {
+  background-color: white;
+  color: #3498db;
+  border: 2px solid #e0e0e0;
+}
+
+.secondary-button:hover {
+  border-color: #3498db;
+  color: #2980b9;
+}
+
+/* Features section */
+.features-section {
+  padding: 80px 20px;
+  background-color: white;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: #222;
+  font-weight: 700;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon {
+  color: #3498db;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.feature-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Tech stack section */
+.tech-stack-section {
+  padding: 60px 20px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.tech-logos {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tech-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  color: #555;
+  width: 40px;
+  height: 40px;
+}
+
+.tech-logo span {
+  font-weight: 500;
+  color: #555;
+}
+
+/* Authenticated section */
+.authenticated-section {
+  padding: 60px 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1rem 0 0.25rem;
+  color: #222;
+}
+
+.user-email {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.role-title {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  color: #222;
+  font-weight: 600;
+}
+
+.error-message {
+  background-color: #fff5f5;
+  color: #e53e3e;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #e53e3e;
+  width: 100%;
+  max-width: 500px;
+  text-align: left;
+}
+
+.role-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.role-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 2px solid #eee;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.role-card:hover {
+  border-color: #3498db;
+  box-shadow: 0 6px 12px rgba(52, 152, 219, 0.15);
+}
+
+.role-card.selected {
+  border-color: #3498db;
+  background-color: #ebf7ff;
+}
+
+.role-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.author-icon {
+  background-color: #ebf7ff;
+  color: #3498db;
+}
+
+.user-icon {
+  background-color: #f0fdf4;
+  color: #22c55e;
+}
+
+.role-name {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.role-description {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #666;
+}
+
+/* Add a subtle animated spinner */
+.loading-spinner::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f0f0f0;
+  border-radius: 50%;
+  border-top-color: #3498db;
+  animation: spin 1s linear infinite;
+  margin-top: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.25rem;
+  }
+  
+  .hero-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .hero-cta {
+    flex-direction: column;
+  }
+  
+  .authenticated-section {
+    padding: 40px 16px;
+  }
+}

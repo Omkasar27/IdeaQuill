@@ -1,0 +1,28 @@
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75vh; 
+  padding: 20px;
+}
+
+
+.cl-signIn {
+  max-width: 400px; 
+  background: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+@media (max-width: 600px) {
+  .signin-container {
+    padding: 15px;
+  }
+
+  .cl-signIn {
+    max-width: 100%;
+    padding: 20px;
+  }
+}
