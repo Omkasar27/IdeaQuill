@@ -36,7 +36,7 @@ function PostArticle() {
     articleObj.comments = [];
     articleObj.isArticleActive = true;
 
-    let res = await axios.post('http://localhost:4000/author-api/article', articleObj);
+    let res = await axios.post('https://ideaquill-1.onrender.com/author-api/article', articleObj);
     if (res.status === 201) {
       navigate(`/author-profile/${currentUser.email}/articles`);
     } 
