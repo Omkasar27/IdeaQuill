@@ -239,64 +239,64 @@ function Home() {
         </div>
       )}
 
-      {isSignedIn === true && (
-        <div className="authenticated-section">
-          {isLoading ? (
-            <div className="loading-spinner">
-              <p>Checking account status...</p>
-              {/* Add your spinner component here */}
-            </div>
-          ) : (
-            <>
-              <div className="profile-card">
-                <img
-                  src={user.imageUrl}
-                  className="profile-image"
-                  alt="User profile"
-                />
-                <p className="user-name">{user.firstName}</p>
-                <p className="user-email">{user.emailAddresses[0].emailAddress}</p>
-              </div>
-
-              <p className="role-title">Select your role</p>
-
-              {error.length !== 0 && <p className="error-message">{error}</p>}
-
-              <div className="role-cards">
-                <div
-                  className={`role-card ${
-                    currentUser?.role === "author" && error.length === 0 ? "selected" : ""
-                  }`}
-                  onClick={() => onSelectRole("author")}
-                >
-                  <div className="role-icon author-icon">
-                    <Pen size={24} />
-                  </div>
-                  <h3 className="role-name">Author</h3>
-                  <p className="role-description">
-                    Create and publish content for readers
-                  </p>
-                </div>
-
-                <div
-                  className={`role-card ${
-                    currentUser?.role === "user" && error.length === 0 ? "selected" : ""
-                  }`}
-                  onClick={() => onSelectRole("user")}
-                >
-                  <div className="role-icon user-icon">
-                    <User size={24} />
-                  </div>
-                  <h3 className="role-name">User</h3>
-                  <p className="role-description">
-                    Browse and enjoy published content
-                  </p>
-                </div>
-              </div>
-            </>
-          )}
+{isSignedIn === true && (
+  <div className="authenticated-section">
+    {isLoading ? (
+      <div className="loading-spinner">
+        <p>Checking account status...</p>
+        <div className="spinner"></div>
+      </div>
+    ) : (
+      <>
+        <div className="profile-card">
+          <img
+            src={user.imageUrl}
+            className="profile-image"
+            alt="User profile"
+          />
+          <p className="user-name">{user.firstName} {user.lastName}</p>
+          <p className="user-email">{user.emailAddresses[0].emailAddress}</p>
         </div>
-      )}
+
+        <p className="role-title">Select your role</p>
+
+        {error.length !== 0 && <p className="error-message">{error}</p>}
+
+        <div className="role-cards">
+          <div
+            className={`role-card ${
+              currentUser?.role === "author" && error.length === 0 ? "selected" : ""
+            }`}
+            onClick={() => onSelectRole("author")}
+          >
+            <div className="role-icon author-icon">
+              <Pen size={28} />
+            </div>
+            <h3 className="role-name">Author</h3>
+            <p className="role-description">
+              Create and publish content for readers
+            </p>
+          </div>
+
+          <div
+            className={`role-card ${
+              currentUser?.role === "user" && error.length === 0 ? "selected" : ""
+            }`}
+            onClick={() => onSelectRole("user")}
+          >
+            <div className="role-icon user-icon">
+              <User size={28} />
+            </div>
+            <h3 className="role-name">User</h3>
+            <p className="role-description">
+              Browse and enjoy published content
+            </p>
+          </div>
+        </div>
+      </>
+    )}
+  </div>
+)}
     </div>
   );
 }

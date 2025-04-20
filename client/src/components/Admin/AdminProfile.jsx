@@ -4,6 +4,19 @@ import { useParams, useNavigate } from "react-router-dom";
 import { UserAuthorContextObj } from "../../contexts/UserAuthorContext";
 import './AdminProfile.css';
 
+// Create a constant for the API base URL to match with your Home component
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
+// Create an axios instance with default configuration
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 10000, // 10 seconds timeout
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  withCredentials: true
+});
+
 function AdminProfile() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,8 +34,7 @@ function AdminProfile() {
 
     setLoading(true);
     
-    axios.get("http://localhost:4000/admin-api/users-authors", {
-      withCredentials: true,
+    api.get("/admin-api/users-authors", {
       params: {
         // Add query parameter to exclude admin role
         excludeRoles: ['admin']
@@ -49,12 +61,11 @@ function AdminProfile() {
   }, [currentUser, navigate]);
 
   const updateStatus = (email, isActive) => {
-    axios.put(`http://localhost:4000/admin-api/update-status/${email}`, 
+    api.put(`/admin-api/update-status/${email}`, 
       { 
         isActive,
         adminEmail: currentUser.email // Send admin email for verification
-      },
-      { withCredentials: true }
+      }
     )
       .then(response => {
         // Update the user in the local state
@@ -68,15 +79,12 @@ function AdminProfile() {
       });
   };
 
-  // Rest of the component remains the same as in the original code
-  // (loading state, render method, etc.)
-
   return (
     <div className="admin-dashboard">
       <div className="admin-container">
         <div className="admin-header">
           <div>
-            <h1 className="admin-title">Admin DashBoard</h1>
+            <h1 className="admin-title">Admin Dashboard</h1>
             {email && <p className="admin-subtitle">Logged in as: {email}</p>}
           </div>
           <div className="admin-badge">
@@ -98,73 +106,79 @@ function AdminProfile() {
           </div>
         )}
         
-        <div className="admin-table-container">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Array.isArray(users) && users.length > 0 ? (
-                users.map(user => (
-                  <tr key={user._id || user.email}>
-                    <td>
-                      <div className="admin-user">
-                        <span className="admin-user-name">{user.firstName} {user.lastName}</span>
-                      </div>
-                    </td>
-                    <td className="admin-user-email">{user.email}</td>
-                    <td>
-                      <span className={`admin-role-badge ${user.role}`}>
-                        {user.role}
-                      </span>
-                    </td>
-                    <td>
-                      <div className="admin-status">
-                        <div className={`admin-status-dot ${user.isActive ? "active" : "blocked"}`}></div>
-                        <span className="admin-status-text">{user.isActive ? "Active" : "Blocked"}</span>
-                      </div>
-                    </td>
-                    <td>
-                      <button
-                        className={`admin-action-button ${user.isActive ? "block" : "enable"}`}
-                        onClick={() => updateStatus(user.email, !user.isActive)}
-                      >
-                        {user.isActive ? (
-                          <>
-                            <svg className="admin-action-button-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <line x1="18" y1="6" x2="6" y2="18" />
-                              <line x1="6" y1="6" x2="18" y2="18" />
-                            </svg>
-                            Block
-                          </>
-                        ) : (
-                          <>
-                            <svg className="admin-action-button-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            Enable
-                          </>
-                        )}
-                      </button>
+        {loading ? (
+          <div className="admin-loading">
+            <div className="admin-loading-spinner"></div>
+          </div>
+        ) : (
+          <div className="admin-table-container">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Array.isArray(users) && users.length > 0 ? (
+                  users.map(user => (
+                    <tr key={user._id || user.email}>
+                      <td>
+                        <div className="admin-user">
+                          <span className="admin-user-name">{user.firstName} {user.lastName}</span>
+                        </div>
+                      </td>
+                      <td className="admin-user-email">{user.email}</td>
+                      <td>
+                        <span className={`admin-role-badge ${user.role}`}>
+                          {user.role}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="admin-status">
+                          <div className={`admin-status-dot ${user.isActive ? "active" : "blocked"}`}></div>
+                          <span className="admin-status-text">{user.isActive ? "Active" : "Blocked"}</span>
+                        </div>
+                      </td>
+                      <td>
+                        <button
+                          className={`admin-action-button ${user.isActive ? "block" : "enable"}`}
+                          onClick={() => updateStatus(user.email, !user.isActive)}
+                        >
+                          {user.isActive ? (
+                            <>
+                              <svg className="admin-action-button-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                              </svg>
+                              Block
+                            </>
+                          ) : (
+                            <>
+                              <svg className="admin-action-button-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                              Enable
+                            </>
+                          )}
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="admin-empty-state">
+                      No users or authors found
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="admin-empty-state">
-                    No users or authors found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );
