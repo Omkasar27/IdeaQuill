@@ -6,7 +6,15 @@ const userApp = require("./APIs/userApi");
 const authorApp = require("./APIs/authApi");
 const adminApp = require("./APIs/adminApi");
 const cors=require('cors')
-app.use(cors())
+app.use(cors(
+    {
+        origin: ['https://ideaquill-1.onrender.com', 'https://ideaquilll.netlify.app/'], // Replace with your frontend URL
+        
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        credentials: true
+    }
+))
 
 const port = process.env.PORT || 3000;
 
