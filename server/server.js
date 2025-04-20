@@ -6,7 +6,15 @@ const userApp = require("./APIs/userApi");
 const authorApp = require("./APIs/authApi");
 const adminApp = require("./APIs/adminApi");
 const cors=require('cors')
-app.use(cors())
+app.use(cors(
+      {
+        origin: ['http://localhost:4000', 'http://localhost:5173'], // Replace with your frontend URL
+        
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        credentials: true
+    }
+))
 
 const port = process.env.PORT || 3000;
 
