@@ -5,7 +5,7 @@ import { UserAuthorContextObj } from "../../contexts/UserAuthorContext";
 import './AdminProfile.css';
 
 // Create a constant for the API base URL to match with your Home component
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+const API_BASE_URL =  "https://ideaquill-1.onrender.com";
 
 // Create an axios instance with default configuration
 const api = axios.create({
