@@ -16,7 +16,7 @@ function Articles() {
   async function getArticles() {
     const token = await getToken();
     try {
-      let res = await axios.get('http://localhost:4000/author-api/articles', {
+      let res = await axios.get('https://ideaquill-1.onrender.com/author-api/articles', {
         headers: {
           Authorization: `Bearer ${token}`
         }
