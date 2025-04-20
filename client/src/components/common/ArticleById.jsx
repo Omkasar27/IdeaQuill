@@ -57,7 +57,7 @@ function ArticleByID() {
 
         try {
             let res = await axios.put(
-                `http://localhost:4000/author-api/article/${articleAfterChanges.articleId}`,
+                `https://ideaquill-1.onrender.com/author-api/article/${articleAfterChanges.articleId}`,
                 articleAfterChanges,
                 { headers: { Authorization: `Bearer ${token}` } }
             )
@@ -75,7 +75,7 @@ function ArticleByID() {
         commentObj.nameOfUser = currentUser.firstName
         try {
             let res = await axios.put(
-                `http://localhost:4000/user-api/comment/${currentArticle.articleId}`,
+                `https://ideaquill-1.onrender.com/user-api/comment/${currentArticle.articleId}`,
                 commentObj
             )
             if (res.data.message === 'comment added') {
@@ -121,7 +121,7 @@ function ArticleByID() {
             const updatedState = { ...state, isArticleActive: false }
             
             let res = await axios.put(
-                `http://localhost:4000/author-api/articles/${state.articleId}`,
+                `https://ideaquill-1.onrender.com/author-api/articles/${state.articleId}`,
                 updatedState,
                 { headers: { Authorization: `Bearer ${token}` } }
             )
@@ -147,7 +147,7 @@ function ArticleByID() {
             const updatedState = { ...state, isArticleActive: true }
             
             let res = await axios.put(
-                `http://localhost:4000/author-api/articles/${state.articleId}`,
+                `https://ideaquill-1.onrender.com/author-api/articles/${state.articleId}`,
                 updatedState,
                 { headers: { Authorization: `Bearer ${token}` } }
             )
