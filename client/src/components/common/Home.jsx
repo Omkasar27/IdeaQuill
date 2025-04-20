@@ -41,7 +41,7 @@ function Home() {
       
       if (selectedRole === "author") {
         res = await axios.post(
-          "http://localhost:4000/author-api/author",
+          "https://ideaquill-1.onrender.com/author-api/author",
           {...currentUser, role: selectedRole}
         );
         let { message, payload } = res.data;
@@ -63,7 +63,7 @@ function Home() {
 
       if (selectedRole === "user") {
         res = await axios.post(
-          "http://localhost:4000/user-api/user",
+          "https://ideaquill-1.onrender.com/user-api/user",
           {...currentUser, role: selectedRole}
         );
         let { message, payload } = res.data;
@@ -111,7 +111,7 @@ function Home() {
         try {
           // Since your backend expects a POST request with the email in the body
           const res = await axios.post(
-            "http://localhost:4000/admin-api/check-admin",
+            "https://ideaquill-1.onrender.com/admin-api/check-admin",
             { email: userData.email }  // Send email in request body
           );
           
