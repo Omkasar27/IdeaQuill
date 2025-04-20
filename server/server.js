@@ -8,7 +8,7 @@ const adminApp = require("./APIs/adminApi");
 const cors=require('cors')
 app.use(cors(
       {
-        origin: ['http://localhost:4000', 'http://localhost:5173'], // Replace with your frontend URL
+        origin: ['https://ideaquill-1.onrender.com', 'https://ideaquilll.netlify.app/'], // Replace with your frontend URL
         
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],
