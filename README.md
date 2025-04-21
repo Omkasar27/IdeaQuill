@@ -59,37 +59,13 @@ We believe in the power of the written word to spark change, inspire action, and
 - **Mongoose:** An ODM (Object Data Modeling) library for MongoDB and Node.js  
 
 **Authentication:**  
-- **JWT (JSON Web Tokens):** A secure way to transmit information between client and server  
-- **OAuth:** A protocol for authentication, allowing users to sign in via Google, Facebook, etc.
+- **Clerk:** A Clerk is a developer-first authentication and user management solution. It provides pre-built React components and hooks for sign-in, sign-up, user profile, and organization management.
+
 
 **Deployment:**  
 - **Vercel:** A cloud platform for hosting Next.js apps  
 - **Render:** A cloud platform for building, deploying, and scaling web apps  
 - **MongoDB Atlas:** A fully-managed cloud database service for MongoDB
-
----
-
-## 📌 Roadmap
-
-We're constantly improving **IdeaQuill**. Here are some of the exciting features we’re working on:
-
-- [ ] **User Following and Feeds**  
-  Follow other users and view their posts in your feed.
-
-- [ ] **Scheduled Publishing**  
-  Write posts ahead of time and schedule them to be published automatically.
-
-- [ ] **Email Notifications**  
-  Get notified when someone comments on your posts or follows you.
-
-- [ ] **Post Analytics Dashboard**  
-  Track post performance, including views, comments, and engagement metrics.
-
-- [ ] **Admin Panel**  
-  Add administrative controls for managing content, users, and site settings.
-
-- [ ] **Multiple Language Support**  
-  Reach a wider audience with multi-language options for posts and interface.
 
 ---
 
