@@ -4,8 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { UserAuthorContextObj } from "../../contexts/UserAuthorContext";
 import './AdminProfile.css';
 
-// Create a constant for the API base URL to match with your Home component
-const API_BASE_URL =  "https://ideaquill-1.onrender.com";
+// Create a constant for the API base URL
+const API_BASE_URL = "https://ideaquill-1.onrender.com";
 
 // Create an axios instance with default configuration
 const api = axios.create({
@@ -14,7 +14,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  withCredentials: true
+  withCredentials: false // Changed to false since we're not using cookies for authentication
 });
 
 function AdminProfile() {
@@ -34,12 +34,8 @@ function AdminProfile() {
 
     setLoading(true);
     
-    api.get("/admin-api/users-authors", {
-      params: {
-        // Add query parameter to exclude admin role
-        excludeRoles: ['admin']
-      }
-    })
+    // Adding admin email as a query parameter for authentication
+    api.get(`/admin-api/users-authors?email=${encodeURIComponent(currentUser.email)}`)
       .then(response => {
         console.log("Data received:", response.data);
         // Filter out admin users on the client-side as a backup
