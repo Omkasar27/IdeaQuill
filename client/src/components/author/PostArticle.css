@@ -165,27 +165,6 @@ textarea.error {
   margin-bottom: 1.5rem;
 }
 
-/* Loading State */
-.loading-state {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-
-.loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255, 62, 0, 0.3);
-  border-radius: 50%;
-  border-top-color: #ff3e00;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
 
 /* Responsive Styles */
 @media (max-width: 768px) {
