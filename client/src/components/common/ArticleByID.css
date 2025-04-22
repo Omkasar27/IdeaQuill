@@ -833,27 +833,6 @@
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.9);
 }
 
-/* Loading state */
-.loading-indicator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
-}
-
-.loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid rgba(255, 62, 0, 0.2);
-  border-top-color: #ff3e00;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 
 /* Responsive styles */
 @media (max-width: 768px) {
