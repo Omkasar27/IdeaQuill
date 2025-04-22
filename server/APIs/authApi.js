@@ -1,66 +1,70 @@
-const exp = require('express')
-const authorApp = exp.Router();
+const express = require('express')
+const authorApp = express.Router();
 const expressAsyncHandler = require("express-async-handler");
 const createUserOrAuthor = require('./createUserOrAuthor');
-const Article = require("../models/articleModel")
-const {requireAuth,clerkMiddleware}=require("@clerk/express")
-require('dotenv').config()
+const Article = require("../models/articleModel");
+const { requireAuth } = require("@clerk/express");
+require('dotenv').config();
 
-//authorApp.use(clerkMiddleware())
-//create new author
-authorApp.post("/author", expressAsyncHandler(createUserOrAuthor))
+// Create new author
+authorApp.post("/author", expressAsyncHandler(createUserOrAuthor));
 
-//create new article
+// Create new article
 authorApp.post("/article", expressAsyncHandler(async (req, res) => {
+    const newArticle = new Article(req.body);
+    const savedArticle = await newArticle.save();
+    res.status(201).send({ message: "article published", payload: savedArticle });
+}));
 
-    //get new article obj from req
-    const newArtilceObj = req.body;
-    const newArticle = new Article(newArtilceObj);
-    const articleObj = await newArticle.save();
-    res.status(201).send({ message: "article published", payload: articleObj })
-
-}))
-
-
-//read all articles
-authorApp.get('/articles',requireAuth({signInUrl:"unauthorized"}) ,expressAsyncHandler(async (req, res) => {
-    //read all articles from db
+// Get all active articles
+authorApp.get('/articles', requireAuth({ signInUrl: "unauthorized" }), expressAsyncHandler(async (req, res) => {
     const listOfArticles = await Article.find({ isArticleActive: true });
-    res.status(200).send({ message: "articles", payload: listOfArticles })
-}))
+    res.status(200).send({ message: "articles", payload: listOfArticles });
+}));
 
-authorApp.get('/unauthorized',(req,res)=>{
-    res.send({message:"Unauthorized request"})
-})
+// Unauthorized fallback route
+authorApp.get('/unauthorized', (req, res) => {
+    res.send({ message: "Unauthorized request" });
+});
 
-//modify an article by article id
-authorApp.put('/article/:articleId', requireAuth({signInUrl:"unauthorized"}),expressAsyncHandler(async (req, res) => {
-
-    //get modified article
+// Modify (Edit) article
+authorApp.put('/article/:articleId', requireAuth({ signInUrl: "unauthorized" }), expressAsyncHandler(async (req, res) => {
+    const { articleId } = req.params;
+    const { userId } = req.auth;
     const modifiedArticle = req.body;
-    //update article by article id
-    const latestArticle = await Article.findByIdAndUpdate(modifiedArticle._id,
-        { ...modifiedArticle },
-        { returnOriginal: false })
-    //send res
-    res.status(200).send({ message: "article modified", payload: latestArticle })
-}))
 
+    const article = await Article.findById(articleId);
 
-//delete(soft delete) an article by article id
-authorApp.put('/articles/:articleId',expressAsyncHandler(async (req, res) => {
+    if (!article) {
+        return res.status(404).send({ message: "Article not found" });
+    }
 
-    //get modified article
+    if (article.authorId !== userId) {
+        return res.status(403).send({ message: "Forbidden: Only the original author can modify this article" });
+    }
+
+    const updatedArticle = await Article.findByIdAndUpdate(articleId, modifiedArticle, { new: true });
+    res.status(200).send({ message: "article modified", payload: updatedArticle });
+}));
+
+// Soft delete or restore article
+authorApp.put('/articles/:articleId', requireAuth({ signInUrl: "unauthorized" }), expressAsyncHandler(async (req, res) => {
+    const { articleId } = req.params;
+    const { userId } = req.auth;
     const modifiedArticle = req.body;
-    //update article by article id
-    const latestArticle = await Article.findByIdAndUpdate(modifiedArticle._id,
-        { ...modifiedArticle },
-        { returnOriginal: false })
-    //send res
-    res.status(200).send({ message: "article deleted or restored", payload: latestArticle })
-}))
 
+    const article = await Article.findById(articleId);
 
+    if (!article) {
+        return res.status(404).send({ message: "Article not found" });
+    }
 
+    if (article.authorId !== userId) {
+        return res.status(403).send({ message: "Forbidden: Only the original author can delete or restore this article" });
+    }
+
+    const updatedArticle = await Article.findByIdAndUpdate(articleId, modifiedArticle, { new: true });
+    res.status(200).send({ message: "article deleted or restored", payload: updatedArticle });
+}));
 
 module.exports = authorApp;
