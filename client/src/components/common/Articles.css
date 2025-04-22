@@ -80,6 +80,7 @@
   flex-direction: column;
   overflow: hidden;
   height: 100%;
+  position: relative; /* Added position relative */
 }
 
 .card:hover {
@@ -171,7 +172,7 @@
   color: #666;
 }
 
-/* Add hover effect to card */
+/* Fixed hover effect for card */
 .card::before {
   content: '';
   position: absolute;
@@ -183,6 +184,7 @@
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
+  z-index: 1; /* Added z-index */
 }
 
 .card:hover::before {
