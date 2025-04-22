@@ -244,7 +244,16 @@ function Home() {
     {isLoading ? (
       <div className="loading-spinner">
         <p>Checking account status...</p>
-        <div className="spinner"></div>
+        <div className="spinner-container">
+          <div className="spinner spinner-1"></div>
+          <div className="spinner spinner-2"></div>
+          <div className="spinner spinner-3"></div>
+          <div className="spinner-dot spinner-dot-1"></div>
+          <div className="spinner-dot spinner-dot-2"></div>
+        </div>
+        <div className="spinner-progress">
+          <div className="spinner-progress-bar"></div>
+        </div>
       </div>
     ) : (
       <>
