@@ -1,41 +1,81 @@
-  
+/* RootLayout.css */
+/* Reset some basic elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  .root-layout {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+/* Base styles for the root layout */
+.root-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f5f5f5;
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1.5rem 0.75rem;
   }
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-     background-color: #fff; 
-    border-bottom: 1px solid #ddd;
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 1rem 0.5rem;
   }
+}
 
-  header a {
-    text-decoration: none;
-    color: #007bff;
-    margin: 0 10px;
-    font-weight: bold;
-  }
+/* Additional styles to complement the neobrutalism theme from Clerk */
+:root {
+  --primary-color: #000;
+  --accent-color: #ff3e00;
+  --background-color: #fff;
+  --border-radius: 0;
+  --border-width: 2px;
+  --box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.9);
+}
 
-  
+/* Add some neobrutalism styles to match the Clerk theme */
+button:not([class*="clerk"]) {
+  background-color: var(--background-color);
+  color: var(--primary-color);
+  border: var(--border-width) solid var(--primary-color);
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+  transition: transform 0.1s ease-in-out;
+}
 
-  button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
+button:not([class*="clerk"]):hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.9);
+}
 
-  button:hover {
-    background-color: #0056b3;
-  }
+button:not([class*="clerk"]):active {
+  transform: translate(0, 0);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.9);
+}
 
+/* Add some spacing between elements */
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+}
 
-
+p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
