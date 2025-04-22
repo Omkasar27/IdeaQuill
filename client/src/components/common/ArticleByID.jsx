@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { UserAuthorContextObj } from '../../contexts/UserAuthorContext'
 import { Pencil, Trash2, Undo } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -8,19 +8,35 @@ import { useAuth } from '@clerk/clerk-react'
 import './ArticleByID.css'
 
 function ArticleByID() {
-    const { state } = useLocation()
     const { currentUser } = useContext(UserAuthorContextObj)
-    const [editArticleStatus, setEditArticleStatus] = useState(false)
     const { register, handleSubmit } = useForm()
     const navigate = useNavigate()
     const { getToken } = useAuth()
-    const [currentArticle, setCurrentArticle] = useState(state)
+    const { articleId } = useParams()
+
+    const [currentArticle, setCurrentArticle] = useState(null)
+    const [editArticleStatus, setEditArticleStatus] = useState(false)
     const [commentStatus, setCommentStatus] = useState('')
     const [unauthorized, setUnauthorized] = useState(false)
 
     const isArticleAuthor =
         currentUser?.role === 'author' &&
         currentUser?.userId === currentArticle?.authorData?.authorId
+
+    // Fetch article on mount
+    useEffect(() => {
+        async function fetchArticle() {
+            try {
+                const res = await axios.get(`https://ideaquill-1.onrender.com/user-api/article/${articleId}`)
+                if (res.data.payload) {
+                    setCurrentArticle(res.data.payload)
+                }
+            } catch (error) {
+                console.error("Error fetching article:", error)
+            }
+        }
+        fetchArticle()
+    }, [articleId])
 
     useEffect(() => {
         if (editArticleStatus && !isArticleAuthor) {
@@ -46,22 +62,22 @@ function ArticleByID() {
             return
         }
 
-        const articleAfterChanges = { ...currentArticle, ...modifiedArticle }
         const token = await getToken()
-        const currentDate = new Date()
-        articleAfterChanges.dateOfModification = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`
+        const updatedArticle = {
+            ...currentArticle,
+            ...modifiedArticle,
+            dateOfModification: new Date().toLocaleDateString()
+        }
 
         try {
             let res = await axios.put(
-                `https://ideaquill-1.onrender.com/author-api/article/${articleAfterChanges.articleId}`,
-                articleAfterChanges,
+                `https://ideaquill-1.onrender.com/author-api/article/${updatedArticle.articleId}`,
+                updatedArticle,
                 { headers: { Authorization: `Bearer ${token}` } }
             )
-
             if (res.data.message === 'article modified') {
                 setEditArticleStatus(false)
                 setCurrentArticle(res.data.payload)
-                navigate(`/author-profile/articles/${articleAfterChanges.articleId}`, { state: res.data.payload })
             }
         } catch (error) {
             console.error("Error updating article:", error)
@@ -78,21 +94,10 @@ function ArticleByID() {
             if (res.data.message === 'comment added') {
                 setCommentStatus('Comment added successfully')
                 document.querySelector('.comment-form').reset()
-
-                if (res.data.payload) {
-                    setCurrentArticle(res.data.payload)
-                } else {
-                    const updatedArticle = { ...currentArticle }
-                    if (!updatedArticle.comments) {
-                        updatedArticle.comments = []
-                    }
-                    updatedArticle.comments.push({
-                        nameOfUser: currentUser.firstName,
-                        comment: commentObj.comment
-                    })
-                    setCurrentArticle(updatedArticle)
-                }
-
+                setCurrentArticle(res.data.payload || {
+                    ...currentArticle,
+                    comments: [...(currentArticle.comments || []), commentObj]
+                })
                 setTimeout(() => setCommentStatus(''), 3000)
             }
         } catch (error) {
@@ -113,11 +118,10 @@ function ArticleByID() {
             const updatedState = { ...currentArticle, isArticleActive: false }
 
             let res = await axios.put(
-                `https://ideaquill-1.onrender.com/author-api/articles/${currentArticle.articleId}`,
+                `https://ideaquill-1.onrender.com/author-api/articles/${articleId}`,
                 updatedState,
                 { headers: { Authorization: `Bearer ${token}` } }
             )
-
             if (res.data.message === 'article deleted or restored') {
                 setCurrentArticle(res.data.payload)
             }
@@ -138,17 +142,20 @@ function ArticleByID() {
             const updatedState = { ...currentArticle, isArticleActive: true }
 
             let res = await axios.put(
-                `https://ideaquill-1.onrender.com/author-api/articles/${currentArticle.articleId}`,
+                `https://ideaquill-1.onrender.com/author-api/articles/${articleId}`,
                 updatedState,
                 { headers: { Authorization: `Bearer ${token}` } }
             )
-
             if (res.data.message === 'article deleted or restored') {
                 setCurrentArticle(res.data.payload)
             }
         } catch (error) {
             console.error("Error restoring article:", error)
         }
+    }
+
+    if (!currentArticle) {
+        return <p className="loading">Loading article...</p>
     }
 
     return (
@@ -174,9 +181,9 @@ function ArticleByID() {
 
                             <div className="article-author">
                                 {currentArticle.authorData.profileImageUrl && (
-                                    <img
-                                        src={currentArticle.authorData.profileImageUrl}
-                                        alt="Author"
+                                    <img 
+                                        src={currentArticle.authorData.profileImageUrl} 
+                                        alt="Author" 
                                         className="author-avatar"
                                     />
                                 )}
@@ -189,18 +196,17 @@ function ArticleByID() {
 
                         {isArticleAuthor && (
                             <div className="article-actions">
-                                <button className="action-button edit-button" onClick={enableEdit}>
+                                <button className="action-button edit-button" onClick={enableEdit} title="Edit article">
                                     <Pencil size={18} />
                                     <span>Edit</span>
                                 </button>
-
                                 {currentArticle.isArticleActive ? (
-                                    <button className="action-button delete-button" onClick={deleteArticle}>
+                                    <button className="action-button delete-button" onClick={deleteArticle} title="Delete article">
                                         <Trash2 size={18} />
                                         <span>Delete</span>
                                     </button>
                                 ) : (
-                                    <button className="action-button restore-button" onClick={restoreArticle}>
+                                    <button className="action-button restore-button" onClick={restoreArticle} title="Restore article">
                                         <Undo size={18} />
                                         <span>Restore</span>
                                     </button>
@@ -220,11 +226,9 @@ function ArticleByID() {
                     </div>
 
                     <div className="comments-section">
-                        <h3 className="comments-title">
-                            Comments ({currentArticle.comments?.length || 0})
-                        </h3>
+                        <h3 className="comments-title">Comments ({currentArticle.comments?.length || 0})</h3>
 
-                        {!currentArticle.comments || currentArticle.comments.length === 0 ? (
+                        {!currentArticle.comments?.length ? (
                             <p className="no-comments">No comments yet. Be the first to share your thoughts!</p>
                         ) : (
                             <div className="comments-list">
@@ -245,11 +249,11 @@ function ArticleByID() {
                             </div>
                         )}
 
-                        {currentUser.role === 'user' && (
+                        {currentUser?.role === 'user' && (
                             <form onSubmit={handleSubmit(addComment)} className="comment-form">
-                                <textarea
-                                    {...register("comment", { required: true })}
-                                    placeholder="Share your thoughts..."
+                                <textarea 
+                                    {...register("comment", { required: true })} 
+                                    placeholder="Share your thoughts..." 
                                     className="comment-input"
                                 />
                                 <button type="submit" className="comment-submit-btn">Post Comment</button>
@@ -263,7 +267,7 @@ function ArticleByID() {
 
                     <div className="form-group">
                         <label htmlFor="title">Title</label>
-                        <input
+                        <input 
                             type="text"
                             id="title"
                             defaultValue={currentArticle.title}
@@ -274,7 +278,7 @@ function ArticleByID() {
 
                     <div className="form-group">
                         <label htmlFor="category">Category</label>
-                        <select
+                        <select 
                             id="category"
                             {...register("category")}
                             defaultValue={currentArticle.category}
@@ -289,7 +293,7 @@ function ArticleByID() {
 
                     <div className="form-group">
                         <label htmlFor="content">Content</label>
-                        <textarea
+                        <textarea 
                             id="content"
                             {...register("content", { required: true })}
                             rows="15"
@@ -299,11 +303,7 @@ function ArticleByID() {
                     </div>
 
                     <div className="form-actions">
-                        <button
-                            type="button"
-                            onClick={() => setEditArticleStatus(false)}
-                            className="cancel-button"
-                        >
+                        <button type="button" onClick={() => setEditArticleStatus(false)} className="cancel-button">
                             Cancel
                         </button>
                         <button type="submit" className="save-button">Save Changes</button>
