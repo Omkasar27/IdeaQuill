@@ -7,7 +7,7 @@ const authorApp = require("./APIs/authApi");
 const adminApp = require("./APIs/adminApi");
 const cors=require('cors')
 app.use(cors({
-  origin: ['https://ideaquill-1.onrender.com', 'https://ideaquilll.netlify.app'],
+  origin: ['https://ideaquill-1.onrender.com', 'https://idea-quill.vercel.app/'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
