@@ -22,6 +22,7 @@ function ArticleByID() {
         currentUser?.role === 'author' &&
         currentUser?.userId === currentArticle?.authorData?.authorId
 
+    // Check authorization status whenever editArticleStatus changes
     useEffect(() => {
         if (editArticleStatus && !isArticleAuthor) {
             setEditArticleStatus(false)
