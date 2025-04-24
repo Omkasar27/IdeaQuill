@@ -18,29 +18,17 @@ function ArticleByID() {
     const [commentStatus, setCommentStatus] = useState('')
     const [unauthorized, setUnauthorized] = useState(false)
 
-    // Make sure this check is secure and can't be bypassed
-    const isArticleAuthor = useMemo(() => {
-        return currentUser?.role === 'author' && 
-               currentUser?.userId === currentArticle?.authorData?.authorId
-    }, [currentUser, currentArticle])
+    const isArticleAuthor =
+        currentUser?.role === 'author' &&
+        currentUser?.userId === currentArticle?.authorData?.authorId
 
-    // Immediately redirect away from edit mode if user is not the author
     useEffect(() => {
         if (editArticleStatus && !isArticleAuthor) {
-            console.log("Unauthorized edit attempt detected")
             setEditArticleStatus(false)
             setUnauthorized(true)
             setTimeout(() => setUnauthorized(false), 3000)
         }
     }, [editArticleStatus, isArticleAuthor])
-    
-    // Additional protection when component mounts
-    useEffect(() => {
-        // If somehow edit mode is true initially but user is not author
-        if (editArticleStatus && !isArticleAuthor) {
-            setEditArticleStatus(false)
-        }
-    }, [])
 
     function enableEdit() {
         if (isArticleAuthor) {
@@ -52,11 +40,8 @@ function ArticleByID() {
     }
 
     async function onSave(modifiedArticle) {
-        // Double-check authorization at time of save
         if (!isArticleAuthor) {
-            console.log("Unauthorized save attempt detected")
             setUnauthorized(true)
-            setEditArticleStatus(false)
             setTimeout(() => setUnauthorized(false), 3000)
             return
         }
@@ -166,9 +151,6 @@ function ArticleByID() {
         }
     }
 
-    // Ensure we don't render the edit form at all if user is not the author
-    const showEditForm = editArticleStatus && isArticleAuthor
-
     return (
         <div className="article-container">
             {unauthorized && (
@@ -177,7 +159,7 @@ function ArticleByID() {
                 </div>
             )}
 
-            {!showEditForm ? (
+            {!editArticleStatus ? (
                 <>
                     <div className="article-header">
                         <div className="article-header-left">
